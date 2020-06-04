@@ -101,9 +101,6 @@ typedef struct SPM_PARAM{
 
 int spm_send_cmd(int fd, char* buffer, int node_size, char* response, int pid, spm_param*sp);
 
-void printf(const char *fmt, ...);
-void printf_helloworld();
-
 #if defined(__cplusplus)
 }
 #endif

@@ -1,4 +1,4 @@
-/*
+
  * Copyright (C) 2011-2018 Intel Corporation. All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -40,7 +40,6 @@ enclave {
      */
     
     trusted {
-        public void printf_helloworld();
 	public int spm_send_cmd(int fd, [in, size=100] char* buffer, int node_size, [in, size=4]char* response, int pid, [in, size=16] spm_param*sp);
     };
 
@@ -50,7 +49,6 @@ enclave {
      *  [string]: specifies 'str' is a NULL terminated buffer.
      */
     untrusted {
-        void ocall_print_string([in, string] const char *str);
 	int enc_rdafwr([in, size=20] DS_PARAM *ds_param, [in, size=8192] char* u_buf, [in, out, size=4] char* response, int count);
     };
 

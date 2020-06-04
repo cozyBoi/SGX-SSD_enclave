@@ -250,11 +250,6 @@ int initialize_enclave(void)
     return 0;
 }
 
-void ocall_print_string(const char *str)
-{
-    printf("%s", str);
-}
-
 /* Application entry */
 int SGX_CDECL main(int argc, char *argv[])
 {
@@ -269,7 +264,7 @@ int SGX_CDECL main(int argc, char *argv[])
         return -1;
     }
     
-    printf_helloworld(global_eid);
+    //printf_helloworld(global_eid);
     
     printf("**************************************************************\n");
     printf("* SGX-SSD policy manager                                     *\n");
@@ -398,7 +393,7 @@ int SGX_CDECL main(int argc, char *argv[])
     sp.backup_cycle = backup_cycle;
     sp.version_num = 0;
     sp.cmd = command;
-    if(spm_send_cmd(0, buf, 0, resp, policy_cnt, &sp) == -1){
+    if(spm_send_cmd(global_eid, 0, buf, 0, resp, policy_cnt, &sp) == -1){
         printf("[spm] error command didn't reach to ssd");
         return 0;
     }
