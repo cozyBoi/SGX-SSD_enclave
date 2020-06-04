@@ -9,7 +9,7 @@
  *   Invokes OCALL to display the enclave buffer to the terminal.
  */
 #include <string.h>
-#include <malloc.h>
+//#include <malloc.h>
 #include <assert.h>
 #include <errno.h>
 #include <stdint.h>
@@ -86,7 +86,8 @@ int spm_send_cmd(int fd, char* buffer, int node_size, char* response, int pid, i
     uint32_t ret_msg;
     uint32_t file_size = node_size;
     uint32_t reserved;
-    int*ds_param = (int*) malloc (sizeof(20*4));
+    //int*ds_param = (int*) malloc (sizeof(20*4));
+    int ds_param[20];
     char *u_buf_ = (char*) malloc (sizeof(char)*(IO_SIZE + SECTOR_SIZE));    //IO_SIZE??
     char *u_buf = (char*) ((((unsigned long)u_buf_ + SECTOR_SIZE -1 ) >> SECTOR_BIT) << SECTOR_BIT);
     
@@ -169,7 +170,7 @@ int spm_send_cmd(int fd, char* buffer, int node_size, char* response, int pid, i
     
     enc_rdafwr(ds_param, u_buf, response, ds_param[3]);
     free(u_buf_);
-    free(ds_param);
+    //free(ds_param);
     return 0;
 }
 
