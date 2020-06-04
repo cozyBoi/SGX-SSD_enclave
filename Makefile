@@ -31,7 +31,8 @@
 
 ######## SGX SDK Settings ########
 
-SGX_SDK ?= /opt/intel/sgxsdk
+SGX_SDK ?= /home/jinu/Desktop/linux_sgx_master/linux/installer/bin/sgxsdk
+#SGX_SDK ?= /opt/intel/sgxsdk
 SGX_MODE ?= HW
 SGX_ARCH ?= x64
 SGX_DEBUG ?= 1
