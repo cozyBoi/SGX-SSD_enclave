@@ -99,8 +99,6 @@ typedef struct SPM_PARAM{
     int cmd;
 }spm_param;
 
-int enc_rdafwr(DS_PARAM *ds_param, char* u_buf, char* response, int count);
-
 int spm_send_cmd(int fd, char* buffer, int node_size, char* response, int pid, spm_param*sp);
 
 void printf(const char *fmt, ...);

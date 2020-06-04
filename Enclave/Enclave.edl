@@ -41,7 +41,7 @@ enclave {
     
     trusted {
         public void printf_helloworld();
-	public int spm_send_cmd(int fd, [in, size=] char* buffer, int node_size, [in, size= ]char* response, int pid, [in, size=] spm_param*sp);
+	public int spm_send_cmd(int fd, [in, size=100] char* buffer, int node_size, [in, size=4]char* response, int pid, [in, size=16] spm_param*sp);
     };
 
     /* 
@@ -51,7 +51,7 @@ enclave {
      */
     untrusted {
         void ocall_print_string([in, string] const char *str);
-	int enc_rdafwr([in, size=] DS_PARAM *ds_param, [in, size=] char* u_buf, [in, out, size=] char* response, int count);
+	int enc_rdafwr([in, size=20] DS_PARAM *ds_param, [in, size=8192] char* u_buf, [in, out, size=4] char* response, int count);
     };
 
 string};
