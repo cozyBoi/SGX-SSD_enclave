@@ -59,7 +59,7 @@ extern "C" {
 //DS_param, ds_cmd는 개발에 따라 정책이 수정될 수 있다.
 //fs_open.c와 openssd jasmine펌웨어 sata_table.c, sata.h 와 반드시 맞춰줄것.
 
-int spm_send_cmd(int fd, char* buffer, int node_size, char* response, int pid, spm_param*sp);
+int spm_send_cmd(int fd, char* buffer, int node_size, char* response, int pid, int*sp);
 
 #if defined(__cplusplus)
 }
