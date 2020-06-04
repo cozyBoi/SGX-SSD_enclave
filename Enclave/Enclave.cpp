@@ -31,6 +31,46 @@
 #include<sys/syscall.h>
 #include<stdlib.h>
 //#include<dumpcode.h>
+typedef struct DS_param{
+    unsigned int fd;
+    unsigned char cmd;
+    unsigned long offset; //여기가 LBA영역에 들어감 6bytes
+    unsigned int size; //이건 lba처럼 count영역에 들어가니, 섹터단위일듯.
+    unsigned int ret_time;
+}DS_PARAM;
+
+enum ds_cmd{
+    DS_WR_RANGE_MIN = 0x43,
+    DS_CREATE_WR = 0x44,
+    DS_OPEN_WR = 0x45,
+    DS_CLOSE_WR = 0x46,
+    DS_REMOVE_WR = 0x47,
+    DS_RITE_WR = 0x48,
+    DS_WR_RANGE_MAX = 0x49,
+    DS_RD_RANGE_MIN = 0x4A,
+    DS_READ_RD = 0x4B,
+    DS_AUTH_RD = 0x4C ,
+    DS_CREATE_RD = 0x4D,
+    DS_OPEN_RD = 0x4E,
+    DS_CLOSE_RD = 0x4F,
+    DS_REMOVE_RD =0x50,
+    DS_WRITE_RD = 0x51,
+    DS_RD_RANGE_MAX= 0x52
+};
+
+enum spm_cmd{
+    SPM_CREATE = 0x65,
+    SPM_CHANGE,
+    SPM_DELETE,
+    SPM_RECOVERY
+};
+
+typedef struct SPM_PARAM{
+    int ret_time;
+    int backup_cycle;
+    int version_num;
+    int cmd;
+}spm_param;
 
 
 int cntw=0;
