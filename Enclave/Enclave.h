@@ -47,7 +47,7 @@ extern "C" {
 #define VERSION_SIZE 4
 #define FD_SIZE 4
 
-#define __NR_enc_rdafwr 333
+
 
 #define P_SIZE 4096
 #define K_SIZE 1024

@@ -20,6 +20,8 @@ const int para_MAX_LEN = 100; //same as max directory size
 #define SPM_CHANGE 0x66
 #define SPM_DELETE 0x67
 
+#define __NR_enc_rdafwr 333
+
 #define POLICY_LIST "/home/jinu/Desktop/policy_list"
 
 //8KB가 넘으면, 쪼개주는정도만..아닌가.....
@@ -393,10 +395,7 @@ int SGX_CDECL main(int argc, char *argv[])
     sp[1] = backup_cycle;
     sp[2] = 0;
     sp[3] = command;
-    if(spm_send_cmd(global_eid, 0, buf, 0, resp, policy_cnt, &sp) == -1){
-        printf("[spm] error command didn't reach to ssd");
-        return 0;
-    }
+    spm_send_cmd(global_eid, 0, buf, 0, resp, policy_cnt, sp);
     
     //성공시 파일에 반영
     
