@@ -395,7 +395,8 @@ int SGX_CDECL main(int argc, char *argv[])
     sp[1] = backup_cycle;
     sp[2] = 0;
     sp[3] = command;
-    spm_send_cmd(global_eid, 0, buf, 0, resp, policy_cnt, sp);
+    int rettt = 0;
+    spm_send_cmd(global_eid, &rettt, 0, buf, 0, resp, policy_cnt, sp);
     
     //성공시 파일에 반영
     
