@@ -80,19 +80,19 @@ double timewr=0;
 //fd는 0으로
 //이건 ocall이라 packing만 해주는 함수라고 생각해야함
 //fileID는 write할때 필요한거라 여기에선 필요가 없음
-int spm_send_cmd(int fd, char* buffer, int node_size, char* response, int pid, spm_param*sp)
+int spm_send_cmd(int fd, char* buffer, int node_size, char* response, int pid, int*sp)
 {
     uint64_t offset = 0;
     uint32_t ret_msg;
     uint32_t file_size = node_size;
     uint32_t reserved;
-    DS_PARAM *ds_param = (DS_PARAM*) malloc (sizeof(DS_PARAM));
+    int*ds_param = (int*) malloc (sizeof(20*4));
     char *u_buf_ = (char*) malloc (sizeof(char)*(IO_SIZE + SECTOR_SIZE));    //IO_SIZE??
     char *u_buf = (char*) ((((unsigned long)u_buf_ + SECTOR_SIZE -1 ) >> SECTOR_BIT) << SECTOR_BIT);
     
-    int cmd = ds_param->cmd = sp->cmd;
-    ds_param->fd = fd;
-    ds_param->offset = offset;
+    int cmd = ds_param[1] = sp[3];
+    ds_param[0] = fd;
+    ds_param[2] = offset;
     
     //ds_param->size = (((node_size + 8)+SECTOR_SIZE-1) >> SECTOR_BIT) << SECTOR_BIT;
     
@@ -117,9 +117,9 @@ int spm_send_cmd(int fd, char* buffer, int node_size, char* response, int pid, s
         case SPM_CREATE:
             //memcpy((char*)(u_buf+file_size), (char*)(&sp->pid), 4);
             memcpy((char*)(u_buf+file_size), (char*)(&pid), 4);
-            memcpy((char*)(u_buf+file_size+4), (char*)(&sp->ret_time), 4);
-            memcpy((char*)(u_buf+file_size+8), (char*)(&sp->backup_cycle), 4);
-            memcpy((char*)(u_buf+file_size+12), (char*)(&sp->version_num), 4);
+            memcpy((char*)(u_buf+file_size+4), (char*)(&sp[0]), 4);
+            memcpy((char*)(u_buf+file_size+8), (char*)(&sp[1]), 4);
+            memcpy((char*)(u_buf+file_size+12), (char*)(&sp[2]), 4);
             //여기위에서 뻑남
             /*
             memcpy((char*)(u_buf+file_size+16), (char*)(&mac), 32);
@@ -135,14 +135,14 @@ int spm_send_cmd(int fd, char* buffer, int node_size, char* response, int pid, s
             print_result("SEED Generate_CMAC", SEED_Generate_CMAC(mac, macLen, in, inLen, key));
             */
             //memcpy((char*)(u_buf+file_size+16), (char*)(&mac), 4);
-            ds_param->size = (((node_size + 16)+SECTOR_SIZE-1) >> SECTOR_BIT) << SECTOR_BIT;
+            ds_param[3] = (((node_size + 16)+SECTOR_SIZE-1) >> SECTOR_BIT) << SECTOR_BIT;
             break;
         case SPM_CHANGE:
             //pid의 정책이 파라미터들로 바뀜
             //memcpy((char*)(u_buf+file_size), (char*)(&sp->pid), 4);
             memcpy((char*)(u_buf+file_size), (char*)(&pid), 4);
-            memcpy((char*)(u_buf+file_size+4), (char*)(&sp->ret_time), 4);
-            memcpy((char*)(u_buf+file_size+8), (char*)(&sp->backup_cycle), 4);
+            memcpy((char*)(u_buf+file_size+4), (char*)(&sp[0]), 4);
+            memcpy((char*)(u_buf+file_size+8), (char*)(&sp[1]), 4);
             
             /*
             memcpy((char*)(u_buf+file_size+16), (char*)(&mac), 32);
@@ -159,7 +159,7 @@ int spm_send_cmd(int fd, char* buffer, int node_size, char* response, int pid, s
             
             //memcpy((char*)(u_buf+file_size+16), (char*)(&mac), 4);
              */
-            ds_param->size = (((node_size + 16)+SECTOR_SIZE-1) >> SECTOR_BIT) << SECTOR_BIT;
+            ds_param[3] = (((node_size + 16)+SECTOR_SIZE-1) >> SECTOR_BIT) << SECTOR_BIT;
             break;
         default:
             printf("[APP] Invalid SPM command\n");
@@ -167,7 +167,7 @@ int spm_send_cmd(int fd, char* buffer, int node_size, char* response, int pid, s
             break;
     }
     
-    enc_rdafwr(ds_param, u_buf, response, ds_param->size);
+    enc_rdafwr(ds_param, u_buf, response, ds_param[3]);
     free(u_buf_);
     free(ds_param);
     return 0;

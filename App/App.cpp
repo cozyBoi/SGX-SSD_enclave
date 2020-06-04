@@ -25,7 +25,7 @@ const int para_MAX_LEN = 100; //same as max directory size
 //8KB가 넘으면, 쪼개주는정도만..아닌가.....
 //넘으면 mac다시계산해야할거같은데.
 //얘를 호출할당시부터 8KB쪼개졌다가정 즉 u_buf사이즈 <=8KB
-int enc_rdafwr(DS_PARAM *ds_param, char* u_buf, char* response, int count)
+int enc_rdafwr(int *ds_param, char* u_buf, char* response, int count)
 {
     //이걸 ocall로 하면 될듯
     uint32_t response_size=40;
@@ -388,11 +388,11 @@ int SGX_CDECL main(int argc, char *argv[])
     //ssd에 cmd날린다.
     char buf[100];
     char resp[100];
-    spm_param sp;
-    sp.ret_time = retention_time;
-    sp.backup_cycle = backup_cycle;
-    sp.version_num = 0;
-    sp.cmd = command;
+    int sp[4];
+    sp[0] = retention_time;
+    sp[1] = backup_cycle;
+    sp[2] = 0;
+    sp[3] = command;
     if(spm_send_cmd(global_eid, 0, buf, 0, resp, policy_cnt, &sp) == -1){
         printf("[spm] error command didn't reach to ssd");
         return 0;
