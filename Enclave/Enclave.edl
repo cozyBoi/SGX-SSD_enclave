@@ -1,11 +1,19 @@
 enclave {
      
+    struct DS_param{
+        unsigned int fd;
+        unsigned char cmd;
+        unsigned long offset; 
+        unsigned int size;
+        unsigned int ret_time;
+    };
+
     trusted {
-	public int spm_send_cmd(int fd, [in, size=100] char* buffer, int node_size, [in, size=4]char* response, int pid, [in, size=16] int*sp);
+	public int spm_send_cmd(int fd, [user_check] char* buffer, int node_size, [user_check] char* response, int pid, [user_check] int*sp);
     };
 
     untrusted {
-	int enc_rdafwr([in, size=20]  int*ds_param, [in, size=8192] char* u_buf, [in, out, size=4] char* response, int count);
+	int enc_rdafwr([user_check] struct DS_param*ds_param, [user_check] char* u_buf, [user_check] char* response, int count);
     };
 
 };

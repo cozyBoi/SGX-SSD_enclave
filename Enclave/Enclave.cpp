@@ -121,45 +121,13 @@ int spm_send_cmd(int fd, char* buffer, int node_size, char* response, int pid, i
             memcpy((char*)(u_buf+file_size+4), (char*)(&sp[0]), 4);
             memcpy((char*)(u_buf+file_size+8), (char*)(&sp[1]), 4);
             memcpy((char*)(u_buf+file_size+12), (char*)(&sp[2]), 4);
-            //여기위에서 뻑남
-            /*
-            memcpy((char*)(u_buf+file_size+16), (char*)(&mac), 32);
-            ds_param->size = (((node_size + 48)+SECTOR_SIZE-1) >> SECTOR_BIT) << SECTOR_BIT;
-            */
-            
-            /*
-            SHA256_Encrpyt((unsigned char*)u_buf, 12, after_enc);
-            
-            keyLen = asc2hex(key, "CAEE9E66F060D74BDA1C7636F765FFB5");
-            inLen = asc2hex(in, "123456789012"); //12바이트
-            macLen = 8;
-            print_result("SEED Generate_CMAC", SEED_Generate_CMAC(mac, macLen, in, inLen, key));
-            */
-            //memcpy((char*)(u_buf+file_size+16), (char*)(&mac), 4);
             ds_param[3] = (((node_size + 16)+SECTOR_SIZE-1) >> SECTOR_BIT) << SECTOR_BIT;
             break;
         case SPM_CHANGE:
             //pid의 정책이 파라미터들로 바뀜
-            //memcpy((char*)(u_buf+file_size), (char*)(&sp->pid), 4);
             memcpy((char*)(u_buf+file_size), (char*)(&pid), 4);
             memcpy((char*)(u_buf+file_size+4), (char*)(&sp[0]), 4);
             memcpy((char*)(u_buf+file_size+8), (char*)(&sp[1]), 4);
-            
-            /*
-            memcpy((char*)(u_buf+file_size+16), (char*)(&mac), 32);
-            ds_param->size = (((node_size + 48)+SECTOR_SIZE-1) >> SECTOR_BIT) << SECTOR_BIT;
-            */
-            
-            /*
-            SHA256_Encrpyt((unsigned char*)u_buf, 12, after_enc);
-            
-            keyLen = asc2hex(key, "CAEE9E66F060D74BDA1C7636F765FFB5");
-            inLen = asc2hex(in, "123456789012"); //12바이트
-            macLen = 8;
-            print_result("SEED Generate_CMAC", SEED_Generate_CMAC(mac, macLen, in, inLen, key));
-            
-            //memcpy((char*)(u_buf+file_size+16), (char*)(&mac), 4);
-             */
             ds_param[3] = (((node_size + 16)+SECTOR_SIZE-1) >> SECTOR_BIT) << SECTOR_BIT;
             break;
         default:
@@ -173,4 +141,3 @@ int spm_send_cmd(int fd, char* buffer, int node_size, char* response, int pid, i
     //free(ds_param);
     return 0;
 }
-
